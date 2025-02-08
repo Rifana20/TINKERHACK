@@ -122,6 +122,18 @@ if uploaded_file is not None:
 st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("🤖 AI Chatbot: Ask me anything!")
 
+# 🔑 Load API Key Securely
+api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
+
+if not api_key:
+    st.error("❌ OpenAI API Key is missing! Please add it in secrets.toml (local) or GitHub Secrets (deployment).")
+    st.stop()
+
+openai.api_key = api_key
+
+st.success("✅ OpenAI API Key Loaded Successfully!")
+
+
 openai.api_key = st.secrets["OPENAI_API_KEY"]  # 🔑 Set your API Key in Streamlit secrets
 
 if "messages" not in st.session_state:
