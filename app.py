@@ -10,7 +10,8 @@ import os
 # -------------------------------
 https://drive.google.com/file/d/16bvig8rIuZqeahGDr3S38Dt1ZIAnNJIo/view?usp=sharing
 # Correct Google Drive File ID (Extract from your link)
-file_id = "16bvig8rIuZqeahGDr3S38Dt1ZIAnNJIo"  # Replace with your actual file ID
+file_id = "16bvig8rIuZqeahGDr3S38Dt1ZIAnNJIo"  # ✅ CORRECT (only the file ID)
+ 
 url = f"https://drive.google.com/uc?id={file_id}"
 
 # Define Model Path
