@@ -37,7 +37,7 @@ def set_background(image_url):
     """
     st.markdown(bg_css, unsafe_allow_html=True)
 
-# ✅ Load Background Image (Place an image named 'background.webp' in the same directory)
+# ✅ Load Background Image (Place an image in the same directory, e.g., 'background.webp')
 set_background("background.webp")
 
 # -------------------------------
@@ -47,27 +47,30 @@ st.markdown(
     """
     <style>
     .title {
-        font-size: 60px;
+        font-size: 70px;  /* Bigger size */
+        text-align: center;
+        color: #ffffff;
+        font-weight: bold;
+        text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .subtitle {
+        font-size: 30px;  /* Bigger size */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
         text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
     }
-    
-    .subtitle {
-        font-size: 26px;
+
+    .prediction-box {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 20px;
+        border-radius: 15px;
         text-align: center;
-        color: #ffffff;
+        color: white;
+        font-size: 24px;
         font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    }
-    
-    .footer {
-        text-align: center;
-        font-size: 18px;
-        color: #ffffff;
-        margin-top: 30px;
-        font-weight: bold;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
     }
     </style>
     """,
@@ -75,10 +78,10 @@ st.markdown(
 )
 
 # -------------------------------
-# 🔹 Page Title
+# 🔹 Page Title (Now Bigger)
 # -------------------------------
 st.markdown('<p class="title">♻️ Biodegradable Image Classifier</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Upload an image to check if it is Biodegradable or Non-Biodegradable</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">📸 Upload an image to check if it is Biodegradable or Non-Biodegradable</p>', unsafe_allow_html=True)
 
 # -------------------------------
 # 🔹 Load Model from Google Drive
@@ -124,48 +127,26 @@ if uploaded_file is not None:
         st.image(img, caption="🖼 Uploaded Image", use_container_width=True)  # ✅ Fixed Warning
 
     # -------------------------------
-    # 🔹 Model Prediction Section in a Container
+    # 🔹 Preprocess and Predict
     # -------------------------------
     with col2:
-        with st.container():
-            st.markdown(
-                """
-                <style>
-                .prediction-container {
-                    background-color: rgba(255, 255, 255, 0.1);
-                    padding: 20px;
-                    border-radius: 15px;
-                    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
-                    text-align: center;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True
-            )
+        st.subheader("🔍 Model Prediction")
+        with st.spinner("🔄 Analyzing Image..."):
+            try:
+                # Preprocess the image
+                img = img.resize((150, 150))
+                img_array = np.array(img) / 255.0  # Normalize
+                img_array = np.expand_dims(img_array, axis=0)
 
-            st.markdown('<div class="prediction-container">', unsafe_allow_html=True)
-            st.subheader("🔍 Model Prediction")
-            
-            with st.spinner("🔄 Analyzing Image..."):
-                try:
-                    # Preprocess the image
-                    img = img.resize((150, 150))
-                    img_array = np.array(img) / 255.0  # Normalize
-                    img_array = np.expand_dims(img_array, axis=0)
+                # Prediction
+                prediction = model.predict(img_array)[0][0]
 
-                    # Prediction
-                    prediction = model.predict(img_array)[0][0]
+                # Display Result Inside a Styled Box
+                result = "✅ **Biodegradable** ♻️" if prediction < 0.5 else "❌ **Non-Biodegradable** 🚯"
+                st.markdown(f'<div class="prediction-box">{result}</div>', unsafe_allow_html=True)
 
-                    # Display Result
-                    if prediction < 0.5:
-                        st.success("✅ **Biodegradable** ♻️")
-                    else:
-                        st.error("❌ **Non-Biodegradable** 🚯")
-
-                except Exception as e:
-                    st.error(f"❌ Error during prediction: {e}")
-
-            st.markdown('</div>', unsafe_allow_html=True)
+            except Exception as e:
+                st.error(f"❌ Error during prediction: {e}")
 
 # -------------------------------
 # 🔹 Footer
