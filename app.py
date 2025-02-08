@@ -5,7 +5,7 @@ import numpy as np
 import os
 import gdown
 
-# ✅ Corrected Google Drive File ID
+# ✅ Correct Google Drive File ID
 file_id = "16bvig8rIuZqeahGDr3S38Dt1ZIAnNJIo"
 url = f"https://drive.google.com/uc?id={file_id}"
 MODEL_PATH = "biodegradable_classifier.keras"
@@ -32,7 +32,7 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg
 
 if uploaded_file is not None:
     # Display uploaded image
-    st.image(uploaded_file, caption="Uploaded Image", use_column_width=True)
+    st.image(uploaded_file, caption="Uploaded Image", use_container_width=True)  # ✅ FIXED DEPRECATION WARNING
 
     # Preprocess the image
     img = image.load_img(uploaded_file, target_size=(150, 150))
