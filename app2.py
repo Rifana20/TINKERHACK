@@ -7,6 +7,7 @@ import numpy as np
 import gdown
 from PIL import Image
 import base64
+import openai.error  # ✅ Import OpenAI error module
 
 # -------------------------------
 # 🔹 Page Configuration
@@ -34,14 +35,14 @@ def set_background(image_url):
         background-attachment: fixed;
     }}
     .title {{
-        font-size: 60px !important;
+        font-size: 70px !important;  /* Increased heading size */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
         text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
     }}
     .subtitle {{
-        font-size: 28px !important;
+        font-size: 32px !important;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -123,26 +124,23 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("🤖 AI Chatbot: Ask me anything!")
 
 # 🔑 Load API Key Securely
-api_key = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
+api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
 
 if not api_key:
     st.error("❌ OpenAI API Key is missing! Please add it in secrets.toml (local) or GitHub Secrets (deployment).")
     st.stop()
 
-openai.api_key = api_key
+openai.api_key = api_key  # ✅ Securely set OpenAI API Key
 
 st.success("✅ OpenAI API Key Loaded Successfully!")
 
-# 🔹 Session State for Chat Memory
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
-# 🔹 Display previous chat history
 for message in st.session_state["messages"]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# 🔹 User Input Handling
 user_input = st.chat_input("Ask about biodegradable waste...")
 
 if user_input:
@@ -152,7 +150,7 @@ if user_input:
         st.markdown(user_input)
 
     with st.chat_message("assistant"):
-        with st.spinner("🤖 Thinking..."):
+        with st.spinner("Thinking..."):
             try:
                 response = openai.ChatCompletion.create(
                     model="gpt-4",
@@ -165,7 +163,7 @@ if user_input:
                 st.session_state["messages"].append({"role": "assistant", "content": reply})
 
             except openai.error.OpenAIError as e:
-                st.error(f"❌ API Error: {e}")
+                st.error(f"❌ OpenAI API Error: {e}")
 
 # -------------------------------
 # 🔹 Footer
