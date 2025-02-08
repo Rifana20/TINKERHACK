@@ -47,7 +47,7 @@ st.markdown(
     """
     <style>
     h1 {
-        font-size: 100px !important;  /* Forced 100px Size */
+        font-size: 90px !important;  /* Forced 100px Size */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
