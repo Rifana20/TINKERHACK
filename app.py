@@ -37,7 +37,7 @@ def set_background(image_url):
     """
     st.markdown(bg_css, unsafe_allow_html=True)
 
-# ✅ Load Background Image (Place an image in the same directory, e.g., 'background.webp')
+# ✅ Load Background Image (Ensure 'background.webp' is in the same folder)
 set_background("background.webp")
 
 # -------------------------------
@@ -47,30 +47,30 @@ st.markdown(
     """
     <style>
     .title {
-        font-size: 70px;  /* Bigger size */
+        font-size: 80px;  /* Even Bigger */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
-        text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+        text-shadow: 5px 5px 12px rgba(0, 0, 0, 0.9);
     }
     
     .subtitle {
-        font-size: 30px;  /* Bigger size */
+        font-size: 40px;  /* Bigger Subtitle */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
-        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
+        text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.9);
     }
 
     .prediction-box {
-        background-color: rgba(0, 0, 0, 0.6);
-        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 25px;
         border-radius: 15px;
         text-align: center;
         color: white;
-        font-size: 24px;
+        font-size: 28px;
         font-weight: bold;
-        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+        box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.8);
     }
     </style>
     """,
@@ -78,7 +78,7 @@ st.markdown(
 )
 
 # -------------------------------
-# 🔹 Page Title (Now Bigger)
+# 🔹 Page Title (Now Even Bigger)
 # -------------------------------
 st.markdown('<p class="title">♻️ Biodegradable Image Classifier</p>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">📸 Upload an image to check if it is Biodegradable or Non-Biodegradable</p>', unsafe_allow_html=True)
