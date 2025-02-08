@@ -37,7 +37,7 @@ def set_background(image_url):
     """
     st.markdown(bg_css, unsafe_allow_html=True)
 
-# ✅ Load Background Image (Place an image in the same directory, e.g., 'background.jpg')
+# ✅ Load Background Image (Place an image named 'background.webp' in the same directory)
 set_background("background.webp")
 
 # -------------------------------
@@ -47,15 +47,15 @@ st.markdown(
     """
     <style>
     .title {
-        font-size: 50px;
+        font-size: 60px;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.8);
     }
     
     .subtitle {
-        font-size: 24px;
+        font-size: 26px;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -124,28 +124,48 @@ if uploaded_file is not None:
         st.image(img, caption="🖼 Uploaded Image", use_container_width=True)  # ✅ Fixed Warning
 
     # -------------------------------
-    # 🔹 Preprocess and Predict
+    # 🔹 Model Prediction Section in a Container
     # -------------------------------
     with col2:
-        st.subheader("🔍 Model Prediction")
-        with st.spinner("🔄 Analyzing Image..."):
-            try:
-                # Preprocess the image
-                img = img.resize((150, 150))
-                img_array = np.array(img) / 255.0  # Normalize
-                img_array = np.expand_dims(img_array, axis=0)
+        with st.container():
+            st.markdown(
+                """
+                <style>
+                .prediction-container {
+                    background-color: rgba(255, 255, 255, 0.1);
+                    padding: 20px;
+                    border-radius: 15px;
+                    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+                    text-align: center;
+                }
+                </style>
+                """,
+                unsafe_allow_html=True
+            )
 
-                # Prediction
-                prediction = model.predict(img_array)[0][0]
+            st.markdown('<div class="prediction-container">', unsafe_allow_html=True)
+            st.subheader("🔍 Model Prediction")
+            
+            with st.spinner("🔄 Analyzing Image..."):
+                try:
+                    # Preprocess the image
+                    img = img.resize((150, 150))
+                    img_array = np.array(img) / 255.0  # Normalize
+                    img_array = np.expand_dims(img_array, axis=0)
 
-                # Display Result
-                if prediction < 0.5:
-                    st.success("✅ **Biodegradable** ♻️")
-                else:
-                    st.error("❌ **Non-Biodegradable** 🚯")
+                    # Prediction
+                    prediction = model.predict(img_array)[0][0]
 
-            except Exception as e:
-                st.error(f"❌ Error during prediction: {e}")
+                    # Display Result
+                    if prediction < 0.5:
+                        st.success("✅ **Biodegradable** ♻️")
+                    else:
+                        st.error("❌ **Non-Biodegradable** 🚯")
+
+                except Exception as e:
+                    st.error(f"❌ Error during prediction: {e}")
+
+            st.markdown('</div>', unsafe_allow_html=True)
 
 # -------------------------------
 # 🔹 Footer
@@ -159,7 +179,4 @@ st.markdown(
     </p>
     """,
     unsafe_allow_html=True
-) 
-
-
-
+)
