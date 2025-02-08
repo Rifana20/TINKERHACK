@@ -18,7 +18,7 @@ st.set_page_config(
 )
 
 # -------------------------------
-# 🔹 Function to Set Background Image
+# 🔹 Function to Set Background Image (Forced Styling)
 # -------------------------------
 def set_background(image_url):
     """Encodes an image as base64 and sets it as a background in Streamlit."""
@@ -37,25 +37,25 @@ def set_background(image_url):
     """
     st.markdown(bg_css, unsafe_allow_html=True)
 
-# ✅ Load Background Image (Ensure 'background.webp' is in the same folder)
+# ✅ Load Background Image
 set_background("background.webp")
 
 # -------------------------------
-# 🔹 Custom Styling for Headings
+# 🔹 Custom Styling for Headings (Forcing Bigger Size)
 # -------------------------------
 st.markdown(
     """
     <style>
-    .title {
-        font-size: 80px;  /* Even Bigger */
+    h1 {
+        font-size: 100px !important;  /* Forced 100px Size */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
         text-shadow: 5px 5px 12px rgba(0, 0, 0, 0.9);
     }
     
-    .subtitle {
-        font-size: 40px;  /* Bigger Subtitle */
+    h2 {
+        font-size: 50px !important;  /* Subtitle Larger */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -64,11 +64,11 @@ st.markdown(
 
     .prediction-box {
         background-color: rgba(0, 0, 0, 0.7);
-        padding: 25px;
+        padding: 30px;
         border-radius: 15px;
         text-align: center;
         color: white;
-        font-size: 28px;
+        font-size: 30px;
         font-weight: bold;
         box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.8);
     }
@@ -78,10 +78,10 @@ st.markdown(
 )
 
 # -------------------------------
-# 🔹 Page Title (Now Even Bigger)
+# 🔹 Page Title (Now **Forcing** 100px)
 # -------------------------------
-st.markdown('<p class="title">♻️ Biodegradable Image Classifier</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">📸 Upload an image to check if it is Biodegradable or Non-Biodegradable</p>', unsafe_allow_html=True)
+st.markdown('<h1>♻️ Biodegradable Image Classifier</h1>', unsafe_allow_html=True)
+st.markdown('<h2>📸 Upload an image to check if it is Biodegradable or Non-Biodegradable</h2>', unsafe_allow_html=True)
 
 # -------------------------------
 # 🔹 Load Model from Google Drive
@@ -124,7 +124,7 @@ if uploaded_file is not None:
     # Display uploaded image
     with col1:
         img = Image.open(uploaded_file)
-        st.image(img, caption="🖼 Uploaded Image", use_container_width=True)  # ✅ Fixed Warning
+        st.image(img, caption="🖼 Uploaded Image", use_container_width=True)
 
     # -------------------------------
     # 🔹 Preprocess and Predict
@@ -154,7 +154,7 @@ if uploaded_file is not None:
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
     """
-    <p class="footer">
+    <p style="text-align:center; font-size:20px; color:white; font-weight:bold;">
         Developed with ❤️ using Streamlit & TensorFlow | 
         <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank" style="color:#ffffff; text-decoration:none;">View on GitHub</a>
     </p>
