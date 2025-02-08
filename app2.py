@@ -7,7 +7,6 @@ import numpy as np
 import gdown
 from PIL import Image
 import base64
-import openai.error  # ✅ Import OpenAI error module
 
 # -------------------------------
 # 🔹 Page Configuration
@@ -35,7 +34,7 @@ def set_background(image_url):
         background-attachment: fixed;
     }}
     .title {{
-        font-size: 70px !important;  /* Increased heading size */
+        font-size: 70px !important;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -162,7 +161,7 @@ if user_input:
                 # Save assistant response in session state
                 st.session_state["messages"].append({"role": "assistant", "content": reply})
 
-            except openai.error.OpenAIError as e:
+            except openai.OpenAIError as e:  # ✅ Catch OpenAI API errors correctly
                 st.error(f"❌ OpenAI API Error: {e}")
 
 # -------------------------------
