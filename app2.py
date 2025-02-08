@@ -123,7 +123,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("🤖 AI Chatbot: Ask me anything!")
 
 # 🔑 Load API Key Securely
-api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
+api_key = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
 
 if not api_key:
     st.error("❌ OpenAI API Key is missing! Please add it in secrets.toml (local) or GitHub Secrets (deployment).")
@@ -133,16 +133,16 @@ openai.api_key = api_key
 
 st.success("✅ OpenAI API Key Loaded Successfully!")
 
-
-openai.api_key = st.secrets["OPENAI_API_KEY"]  # 🔑 Set your API Key in Streamlit secrets
-
+# 🔹 Session State for Chat Memory
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
+# 🔹 Display previous chat history
 for message in st.session_state["messages"]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# 🔹 User Input Handling
 user_input = st.chat_input("Ask about biodegradable waste...")
 
 if user_input:
@@ -152,15 +152,20 @@ if user_input:
         st.markdown(user_input)
 
     with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=st.session_state["messages"]
-            )
-            reply = response["choices"][0]["message"]["content"]
-            st.markdown(reply)
+        with st.spinner("🤖 Thinking..."):
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-4",
+                    messages=st.session_state["messages"]
+                )
+                reply = response["choices"][0]["message"]["content"]
+                st.markdown(reply)
 
-    st.session_state["messages"].append({"role": "assistant", "content": reply})
+                # Save assistant response in session state
+                st.session_state["messages"].append({"role": "assistant", "content": reply})
+
+            except openai.error.OpenAIError as e:
+                st.error(f"❌ API Error: {e}")
 
 # -------------------------------
 # 🔹 Footer
@@ -174,4 +179,4 @@ st.markdown(
     </p>
     """,
     unsafe_allow_html=True
-)
+) 
