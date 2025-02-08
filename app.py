@@ -38,7 +38,7 @@ def set_background(image_url):
     st.markdown(bg_css, unsafe_allow_html=True)
 
 # ✅ Load Background Image (Place an image in the same directory, e.g., 'background.jpg')
-set_background("background.jpg")
+set_background("background.webp")
 
 # -------------------------------
 # 🔹 Custom Styling for Headings
