@@ -7,7 +7,7 @@ import gdown
 from PIL import Image
 
 # -------------------------------
-# 🔹 Page Configuration
+# 🔹 Page Configuration & Styling
 # -------------------------------
 st.set_page_config(
     page_title="♻️ Biodegradable Classifier",
@@ -15,6 +15,51 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Custom CSS for Background & Styling
+st.markdown(
+    """
+    <style>
+    /* Background Image */
+    .stApp {
+        background: url("https://source.unsplash.com/1600x900/?nature,green") no-repeat center fixed;
+        background-size: cover;
+    }
+    
+    /* Heading Design */
+    .title {
+        font-size: 42px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .subtitle {
+        font-size: 22px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    
+    /* Footer */
+    .footer {
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        margin-top: 30px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# -------------------------------
+# 🔹 Page Title
+# -------------------------------
+st.markdown('<p class="title">♻️ Biodegradable Image Classifier</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Upload an image to check if it is Biodegradable or Non-Biodegradable</p>', unsafe_allow_html=True)
 
 # -------------------------------
 # 🔹 Load Model from Google Drive
@@ -89,9 +134,9 @@ if uploaded_file is not None:
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
     """
-    <p style="text-align: center; font-size: 16px;">
+    <p class="footer">
         Developed with ❤️ using Streamlit & TensorFlow | 
-        <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank">View on GitHub</a>
+        <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank" style="color:#fff; text-decoration:none;">View on GitHub</a>
     </p>
     """,
     unsafe_allow_html=True
