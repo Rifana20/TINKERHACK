@@ -151,17 +151,20 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                response = openai.ChatCompletion.create(
+                client = openai.OpenAI(api_key=api_key)  # ✅ Correct OpenAI Client Call
+
+                response = client.chat.completions.create(
                     model="gpt-4",
                     messages=st.session_state["messages"]
                 )
-                reply = response["choices"][0]["message"]["content"]
+                
+                reply = response.choices[0].message.content
                 st.markdown(reply)
 
                 # Save assistant response in session state
                 st.session_state["messages"].append({"role": "assistant", "content": reply})
 
-            except openai.OpenAIError as e:  # ✅ Catch OpenAI API errors correctly
+            except openai.OpenAIError as e:  # ✅ Corrected OpenAI API error handling
                 st.error(f"❌ OpenAI API Error: {e}")
 
 # -------------------------------
