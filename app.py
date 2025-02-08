@@ -5,6 +5,28 @@ import numpy as np
 import urllib.request
 import os
 
+
+
+import gdown
+import tensorflow as tf
+
+# Google Drive file ID (replace with your actual ID)
+file_id = "https://drive.google.com/file/d/16bvig8rIuZqeahGDr3S38Dt1ZIAnNJIo/view?usp=sharing"
+url = f"https://drive.google.com/uc?id={file_id}"
+
+# Download the model
+output = "biodegradable_classifier.keras"
+gdown.download(url, output, quiet=False)
+
+# Load the model
+model = tf.keras.models.load_model(output)
+
+# Now you can use the model for predictions
+
+
+
+
+
 # GitHub Model URL
 MODEL_URL = "https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/raw/main/biodegradable_classifier.keras"
 
