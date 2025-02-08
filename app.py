@@ -5,50 +5,69 @@ import numpy as np
 import os
 import gdown
 from PIL import Image
+import base64
 
 # -------------------------------
 # 🔹 Page Configuration & Styling
 # -------------------------------
 st.set_page_config(
-    page_title="♻️ Biodegradable Classifier",
+    page_title="♻️ Biodegradable Image Classifier",
     page_icon="🌍",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Background & Styling
+# -------------------------------
+# 🔹 Function to Set Background Image
+# -------------------------------
+def set_background(image_url):
+    """Encodes an image as base64 and sets it as a background in Streamlit."""
+    with open(image_url, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode()
+    
+    bg_css = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/png;base64,{encoded_string}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(bg_css, unsafe_allow_html=True)
+
+# ✅ Load Background Image (Place an image in the same directory, e.g., 'background.jpg')
+set_background("background.jpg")
+
+# -------------------------------
+# 🔹 Custom Styling for Headings
+# -------------------------------
 st.markdown(
     """
     <style>
-    /* Background Image */
-    .stApp {
-        background: url("https://source.unsplash.com/1600x900/?nature,green") no-repeat center fixed;
-        background-size: cover;
-    }
-    
-    /* Heading Design */
     .title {
-        font-size: 42px;
+        font-size: 50px;
         text-align: center;
-        color: #fff;
+        color: #ffffff;
         font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-    }
-
-    .subtitle {
-        font-size: 22px;
-        text-align: center;
-        color: #fff;
-        font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     }
     
-    /* Footer */
+    .subtitle {
+        font-size: 24px;
+        text-align: center;
+        color: #ffffff;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    }
+    
     .footer {
         text-align: center;
-        font-size: 16px;
-        color: #fff;
+        font-size: 18px;
+        color: #ffffff;
         margin-top: 30px;
+        font-weight: bold;
     }
     </style>
     """,
@@ -136,7 +155,7 @@ st.markdown(
     """
     <p class="footer">
         Developed with ❤️ using Streamlit & TensorFlow | 
-        <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank" style="color:#fff; text-decoration:none;">View on GitHub</a>
+        <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME" target="_blank" style="color:#ffffff; text-decoration:none;">View on GitHub</a>
     </p>
     """,
     unsafe_allow_html=True
