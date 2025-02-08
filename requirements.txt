@@ -1,7 +1,10 @@
 streamlit
 tensorflow
-pillow
 numpy
+pillow
 gdown
-openai
-streamlit_chat
+transformers
+torch
+accelerate
+sentencepiece
+safetensors
