@@ -47,7 +47,7 @@ st.markdown(
     """
     <style>
     h1 {
-        font-size: 90px !important;  /* Forced 100px Size */
+        font-size: 60px !important;  /* Forced 100px Size */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -55,7 +55,7 @@ st.markdown(
     }
     
     h2 {
-        font-size: 50px !important;  /* Subtitle Larger */
+        font-size: 30px !important;  /* Subtitle Larger */
         text-align: center;
         color: #ffffff;
         font-weight: bold;
