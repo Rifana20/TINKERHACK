@@ -80,7 +80,7 @@ st.markdown(
 # -------------------------------
 # 🔹 Page Title (Now **Forcing** 100px)
 # -------------------------------
-st.markdown('<h1>♻️ Biodegradable Image Classifier</h1>', unsafe_allow_html=True)
+st.markdown('<h1>♻️ TrashTrack: Smart Waste Sorting</h1>', unsafe_allow_html=True)
 st.markdown('<h2>📸 Upload an image to check if it is Biodegradable or Non-Biodegradable</h2>', unsafe_allow_html=True)
 
 # -------------------------------
