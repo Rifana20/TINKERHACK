@@ -1,5 +1,4 @@
 import streamlit as st
-import openai
 import os
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
@@ -7,6 +6,7 @@ import numpy as np
 import gdown
 from PIL import Image
 import base64
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 # -------------------------------
 # 🔹 Page Configuration
@@ -34,14 +34,14 @@ def set_background(image_url):
         background-attachment: fixed;
     }}
     .title {{
-        font-size: 70px !important;
+        font-size: 60px !important;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
         text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
     }}
     .subtitle {{
-        font-size: 32px !important;
+        font-size: 28px !important;
         text-align: center;
         color: #ffffff;
         font-weight: bold;
@@ -117,25 +117,25 @@ if uploaded_file is not None:
                     st.error(f"❌ Error during prediction: {e}")
 
 # -------------------------------
-# 🔹 Chatbot Section
+# 🔹 Chatbot Section (Mistral-7B)
 # -------------------------------
 st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("🤖 AI Chatbot: Ask me anything!")
 
-# 🔑 Load API Key Securely
-api_key = os.getenv("OPENAI_API_KEY", st.secrets.get("OPENAI_API_KEY"))
+# 🔹 Load Mistral-7B Model from Hugging Face
+@st.cache_resource()  # Cache to avoid reloading
+def load_mistral_model():
+    model_name = "mistralai/Mistral-7B-Instruct"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", torch_dtype="auto")
+    return pipeline("text-generation", model=model, tokenizer=tokenizer)
 
-if not api_key:
-    st.error("❌ OpenAI API Key is missing! Please add it in secrets.toml (local) or GitHub Secrets (deployment).")
-    st.stop()
-
-openai.api_key = api_key  # ✅ Securely set OpenAI API Key
-
-st.success("✅ OpenAI API Key Loaded Successfully!")
+chat_model = load_mistral_model()
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
+# Display past messages
 for message in st.session_state["messages"]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -150,22 +150,11 @@ if user_input:
 
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            try:
-                client = openai.OpenAI(api_key=api_key)  # ✅ Correct OpenAI Client Call
+            response = chat_model(user_input, max_length=200, do_sample=True)
+            reply = response[0]['generated_text']
+            st.markdown(reply)
 
-                response = client.chat.completions.create(
-                    model="gpt-4",
-                    messages=st.session_state["messages"]
-                )
-                
-                reply = response.choices[0].message.content
-                st.markdown(reply)
-
-                # Save assistant response in session state
-                st.session_state["messages"].append({"role": "assistant", "content": reply})
-
-            except openai.OpenAIError as e:  # ✅ Corrected OpenAI API error handling
-                st.error(f"❌ OpenAI API Error: {e}")
+    st.session_state["messages"].append({"role": "assistant", "content": reply})
 
 # -------------------------------
 # 🔹 Footer
@@ -179,4 +168,4 @@ st.markdown(
     </p>
     """,
     unsafe_allow_html=True
-) 
+)
